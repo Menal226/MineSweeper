@@ -21,6 +21,7 @@ namespace MineSweeper
     public partial class MainWindow : Window
     {
         bool flagMode = false;
+        bool isPlaying = true;
         //Vytvoří hrací plochu
         int[,] GameBoard = {
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -165,16 +166,31 @@ namespace MineSweeper
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var zmáčknutéTlačíko = (Button)sender;
-            //Zjistí souřadnice tlačítka pomocí jeho názvu
-            int sloupec = Convert.ToInt32(Convert.ToString(zmáčknutéTlačíko.Name[8]));
-            int řádek = Convert.ToInt32(Convert.ToString(zmáčknutéTlačíko.Name[10]) + Convert.ToString(zmáčknutéTlačíko.Name[11]));
-            //Pokud je zapnutý flagmode dá na zmáčknuté místo vlajku
-            if (flagMode)
+            if (isPlaying)
             {
-                GameBoard[řádek, sloupec] = 10;
-                zmáčknutéTlačíko.Content = "🚩";
+                var zmáčknutéTlačíko = (Button)sender;
+                //Zjistí souřadnice tlačítka pomocí jeho názvu
+                int sloupec = Convert.ToInt32(Convert.ToString(zmáčknutéTlačíko.Name[8]));
+                int řádek = Convert.ToInt32(Convert.ToString(zmáčknutéTlačíko.Name[10]) + Convert.ToString(zmáčknutéTlačíko.Name[11]));
+                //Pokud je zapnutý flagmode dá na zmáčknuté místo vlajku
+                if (flagMode)
+                {
+                    GameBoard[řádek, sloupec] = 10;
+                    zmáčknutéTlačíko.Content = "🚩";
+                }
+                else
+                {
+                    if (GameBoard[řádek, sloupec] == 9)
+                    {
+                        zmáčknutéTlačíko.Name = "💣";
+                    }
+                }
             }
+            else
+            {
+
+            }
+
 
         }
 
