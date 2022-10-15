@@ -44,9 +44,31 @@ namespace MineSweeper
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 }, };
+        int[,] GameBoardDuring = {
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                { 0, 0, 0, 0, 0, 0, 0, 0, 0 }, };
+
         public MainWindow()
         {
-            int kolikMinJeVeHre = 0;
+            int kolikMinJeVeHre = 50;
             //Vygeneruje souřadnice min
             var souřadniceMinČíslo = RNG(kolikMinJeVeHre);
             //Zaplní hrací plochu minama
@@ -59,82 +81,86 @@ namespace MineSweeper
             //Projde každé políčko a zapíše kolik bomb kolem sebe má
             for (int i = 0; i < 180; i++)
             {
-                int řada = i / 9;
-                int sloupec = i % 9;
-                int bombAmount = 0;
-                //Pokud je bomba v levo nahoře přidej 1 do počtu
-                try
+                if (!souřadniceMinČíslo.Contains(i))
                 {
-                    if (GameBoard[řada - 1, sloupec - 1] == 9) bombAmount++;
-                }
-                catch
-                {
+                    int řada = i / 9;
+                    int sloupec = i % 9;
+                    int bombAmount = 0;
+                    //Pokud je bomba v levo nahoře přidej 1 do počtu
+                    try
+                    {
+                        if (GameBoard[řada - 1, sloupec - 1] == 9) bombAmount++;
+                    }
+                    catch
+                    {
 
-                }
-                //Pokud je bomba uprostřed nahoře přidej 1 do počtu
-                try
-                {
-                    if (GameBoard[řada - 1, sloupec] == 9) bombAmount++;
-                }
-                catch
-                {
+                    }
+                    //Pokud je bomba uprostřed nahoře přidej 1 do počtu
+                    try
+                    {
+                        if (GameBoard[řada - 1, sloupec] == 9) bombAmount++;
+                    }
+                    catch
+                    {
 
-                }
-                //Pokud je bomba v pravo nahoře přidej 1 do počtu
-                try
-                {
-                    if (GameBoard[řada - 1, sloupec + 1] == 9) bombAmount++;
-                }
-                catch
-                {
+                    }
+                    //Pokud je bomba v pravo nahoře přidej 1 do počtu
+                    try
+                    {
+                        if (GameBoard[řada - 1, sloupec + 1] == 9) bombAmount++;
+                    }
+                    catch
+                    {
 
-                }
-                //Pokud je bomba v levo přidej 1 do počtu
-                try
-                {
-                    if (GameBoard[řada, sloupec - 1] == 9) bombAmount++;
-                }
-                catch
-                {
+                    }
+                    //Pokud je bomba v levo přidej 1 do počtu
+                    try
+                    {
+                        if (GameBoard[řada, sloupec - 1] == 9) bombAmount++;
+                    }
+                    catch
+                    {
 
-                }
-                //Pokud je bomba v pravo přidej 1 do počtu
-                try
-                {
-                    if (GameBoard[řada, sloupec + 1] == 9) bombAmount++;
-                }
-                catch
-                {
+                    }
+                    //Pokud je bomba v pravo přidej 1 do počtu
+                    try
+                    {
+                        if (GameBoard[řada, sloupec + 1] == 9) bombAmount++;
+                    }
+                    catch
+                    {
 
-                }
-                //Pokud je bomba v levo dole přidej 1 do počtu
-                try
-                {
-                    if (GameBoard[řada + 1, sloupec - 1] == 9) bombAmount++;
-                }
-                catch
-                {
+                    }
+                    //Pokud je bomba v levo dole přidej 1 do počtu
+                    try
+                    {
+                        if (GameBoard[řada + 1, sloupec - 1] == 9) bombAmount++;
+                    }
+                    catch
+                    {
 
-                }
-                //Pokud je bomba v uprostřed dole přidej 1 do počtu
-                try
-                {
-                    if (GameBoard[řada + 1, sloupec] == 9) bombAmount++;
-                }
-                catch
-                {
+                    }
+                    //Pokud je bomba v uprostřed dole přidej 1 do počtu
+                    try
+                    {
+                        if (GameBoard[řada + 1, sloupec] == 9) bombAmount++;
+                    }
+                    catch
+                    {
 
-                }
-                //Pokud je bomba v pravo dole přidej 1 do počtu
-                try
-                {
-                    if (GameBoard[řada + 1, sloupec + 1] == 9) bombAmount++;
-                }
-                catch
-                {
+                    }
+                    //Pokud je bomba v pravo dole přidej 1 do počtu
+                    try
+                    {
+                        if (GameBoard[řada + 1, sloupec + 1] == 9) bombAmount++;
+                    }
+                    catch
+                    {
 
+                    }
+                    GameBoard[řada, sloupec] = bombAmount;
                 }
-                GameBoard[řada, sloupec] = bombAmount;
+
             }
         }
         /// <summary>
@@ -175,14 +201,18 @@ namespace MineSweeper
                 //Pokud je zapnutý flagmode dá na zmáčknuté místo vlajku
                 if (flagMode)
                 {
-                    GameBoard[řádek, sloupec] = 10;
+                    GameBoardDuring[řádek, sloupec] = 10;
                     zmáčknutéTlačíko.Content = "🚩";
                 }
                 else
                 {
                     if (GameBoard[řádek, sloupec] == 9)
                     {
-                        zmáčknutéTlačíko.Name = "💣";
+                        zmáčknutéTlačíko.Content = "💣";
+                    }
+                    else
+                    {
+                        zmáčknutéTlačíko.Content = Convert.ToString(GameBoard[řádek, sloupec]);
                     }
                 }
             }
@@ -190,8 +220,6 @@ namespace MineSweeper
             {
 
             }
-
-
         }
 
         private void ModeSwitchButton_Click(object sender, RoutedEventArgs e)
