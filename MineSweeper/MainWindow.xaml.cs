@@ -1,17 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MineSweeper
 {
@@ -20,9 +10,13 @@ namespace MineSweeper
     /// </summary>
     public partial class MainWindow : Window
     {
+
         bool flagMode = false;
         bool isPlaying = true;
         //Vytvoří hrací plochu
+        /// <summary>
+        /// Herní plocha, na které nikdy nejsou vlajky
+        /// </summary>
         int[,] GameBoard = {
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -44,7 +38,10 @@ namespace MineSweeper
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 }, };
-        int[,] GameBoardDuring = {
+        /// <summary>
+        /// Herní plocha, na které jsou jen vlajky
+        /// </summary>
+        int[,] GameBoardFlag = {
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -65,10 +62,14 @@ namespace MineSweeper
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 { 0, 0, 0, 0, 0, 0, 0, 0, 0 }, };
+        //Pokud min bude ve hře a zároveň kolik je mas počet vlajek
+        int kolikMinJeVeHre = 50;
 
         public MainWindow()
         {
-            int kolikMinJeVeHre = 50;
+            InitializeComponent();
+            //Napíše do hry kolik min je ve hře
+            FlagAmountText.Content = Convert.ToString($" 🚩 \n {kolikMinJeVeHre}");
             //Vygeneruje souřadnice min
             var souřadniceMinČíslo = RNG(kolikMinJeVeHre);
             //Zaplní hrací plochu minama
@@ -181,7 +182,7 @@ namespace MineSweeper
                 {
                     //Náhodné číslo od 1 do 180
                     number = rand.Next(1, 180);
-                    //Jestli ještě neexistuje, tak ho uloží
+                    //Jestli ještě neexistuje, tak ho ulož
                 } while (listNumbers.Contains(number));
                 //Přidá ho na list
                 listNumbers.Add(number);
@@ -192,6 +193,7 @@ namespace MineSweeper
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            //Pokud se pořád hraje
             if (isPlaying)
             {
                 var zmáčknutéTlačíko = (Button)sender;
@@ -201,27 +203,61 @@ namespace MineSweeper
                 //Pokud je zapnutý flagmode dá na zmáčknuté místo vlajku
                 if (flagMode)
                 {
-                    GameBoardDuring[řádek, sloupec] = 10;
-                    zmáčknutéTlačíko.Content = "🚩";
+                    //Pokud na místě již není vlajka
+                    if (GameBoardFlag[řádek, sloupec] != 10)
+                    {
+                        //Přidá na do tabulky vlajku
+                        GameBoardFlag[řádek, sloupec] = 10;
+                        //Zobrazí na místo vlajku
+                        zmáčknutéTlačíko.Content = "🚩";
+                        kolikMinJeVeHre--;
+                        //Napíše do hry kolik min je ve hře
+                        FlagAmountText.Content = Convert.ToString($" 🚩 \n {kolikMinJeVeHre}");
+                    }
                 }
+                //Pokud je vypnutý flagMode
                 else
                 {
+                    //Pokud je na kliknutém místě bomba
                     if (GameBoard[řádek, sloupec] == 9)
                     {
+                        //Ukáže na kliknutém místě bombu bombu
                         zmáčknutéTlačíko.Content = "💣";
+                        //Ukončí hru
+                        isPlaying = false;
+                        //Napíše na obrazovku
+                        MessageBox.Show("BOOM!");
                     }
+                    //Pokud na kliknutém místě vlajka
+                    else if (GameBoardFlag[řádek, sloupec] == 10)
+                    {
+                        //Zvýší počet dostupných vlajek
+                        kolikMinJeVeHre++;
+                        //Napíše do hry kolik min je ve hře
+                        FlagAmountText.Content = Convert.ToString($" 🚩 \n {kolikMinJeVeHre}");
+                        //Ukáže na místě korespondované číslo
+                        zmáčknutéTlačíko.Content = Convert.ToString(GameBoard[řádek, sloupec]);
+                        //Odstraní vlajku z desky
+                        GameBoardFlag[řádek, sloupec] = 0;
+                    }
+                    //Pokud na kliknutém místě není bomba ani vlajka
                     else
                     {
+                        //Ukáže na místě korespondované číslo
                         zmáčknutéTlačíko.Content = Convert.ToString(GameBoard[řádek, sloupec]);
                     }
                 }
             }
+            //Pokud hra byla dohraná
             else
             {
-
+                //Napíše na obrazovku
+                MessageBox.Show("Tato hra byla dohrána");
             }
         }
-
+        /// <summary>
+        /// Změní mode z vlajek na klikání a z5
+        /// </summary>
         private void ModeSwitchButton_Click(object sender, RoutedEventArgs e)
         {
             //Pokud je flagMode zapnutý

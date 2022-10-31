@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MineSweeper"
         mc:Ignorable="d"
-        Title="MineSweeper" Height="427.474" Width="279.296">
+        Title="MineSweepery" Height="427.474" Width="279.296">
     <Grid>
         <Grid.ColumnDefinitions>
 
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="40"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="41"/>
 
         </Grid.ColumnDefinitions>
         <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Column="0">
@@ -250,7 +250,8 @@
             <!--#endregion-->
             <!--#endregion-->
         </Grid>
-        <Button Content="⚒️" Name="ModeSwitchButton" Grid.Column="1" HorizontalAlignment="Left" Margin="5,44,0,0" VerticalAlignment="Top" Width="33" Click="ModeSwitchButton_Click"/>
+        <Button Content="⚒️" Name="ModeSwitchButton" Grid.Column="1" HorizontalAlignment="Left" Margin="3,59,0,0" VerticalAlignment="Top" Width="35" Click="ModeSwitchButton_Click" Height="20" RenderTransformOrigin="0.352,2.25"/>
+        <Label Content="" Name="FlagAmountText" Grid.Column="1" HorizontalAlignment="Left" Margin="3,10,0,0" VerticalAlignment="Top" Width="35" Height="44"/>
 
     </Grid>
 </Window>
